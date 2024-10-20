@@ -1,0 +1,47 @@
+
+CREATE DATABASE university;
+
+USE university;
+
+CREATE TABLE students_table (
+  student_id INT AUTO_INCREMENT,
+  surname VARCHAR(25) NOT NULL,
+  lastname VARCHAR(25) NOT NULL,
+  PRIMARY KEY (student_id)
+);
+
+CREATE TABLE lecturers_table (
+  lecturer_id INT AUTO_INCREMENT,
+  surname VARCHAR(25) NOT NULL,
+  lastname VARCHAR(25) NOT NULL,
+  PRIMARY KEY (lecturer_id)
+);
+
+CREATE TABLE units_table (
+  unit_id INT AUTO_INCREMENT,
+  unit_name VARCHAR(50) NOT NULL,
+  lecturer_id INT,
+  PRIMARY KEY (unit_id),
+  FOREIGN KEY (lecturer_id) REFERENCES lecturers_table(lecturer_id)
+);
+
+CREATE TABLE classes_table (
+  class_id INT AUTO_INCREMENT,
+  lecturer_id INT,
+  class_date DATE NOT NULL,
+  unit_id INT,
+  PRIMARY KEY (class_id),
+  FOREIGN KEY (lecturer_id) REFERENCES lecturers_table(lecturer_id),
+  FOREIGN KEY (unit_id) REFERENCES units_table(unit_id)
+);
+
+CREATE TABLE attendance_table (
+  attendance_id INT AUTO_INCREMENT,
+  class_id INT,
+  student_id INT,
+  attendance BOOLEAN DEFAULT FALSE,
+  last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (attendance_id),
+  FOREIGN KEY (class_id) REFERENCES classes_table(class_id),
+  FOREIGN KEY (student_id) REFERENCES students_table(student_id)
+);

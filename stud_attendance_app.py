@@ -17,6 +17,7 @@ class database():
             password = self._password,
         )
         self.cursor = self.conn.cursor() # Create cursor object
+        print ("Connection Established!")
 
 class attendancems(): # Functions to interact with database
     def Add_student (self,surname,last_name):
@@ -27,7 +28,7 @@ class attendancems(): # Functions to interact with database
         db.cursor.execute(query,values)
         db.conn.close()
         
-    def Add_lecturer(self,surname,last_name): # Adds a New Lecturer eg. George
+    def add_lecturer(self,surname,last_name): # Adds a New Lecturer eg. George
         query = ("INSERT INTO lecturers (surname,last_name) VALUES (%s,%s)")
         values = (surname, last_name)
         db = database()
@@ -35,7 +36,7 @@ class attendancems(): # Functions to interact with database
         db.cursor.execute(query,values)
         db.conn.close()
     def create_class(self,lecturer_id,lecture_date,unit_id): # Creates a new class/lecture eg.Saturday 3pm
-        query = ("INSERT INTO classes (lecturer_id,lecture_date,unit_id) VALUES (%s,%s,%s,%s)")
+        query = ("INSERT INTO classes (lecturer_id,class_date,unit_id) VALUES (%s,%s,%s,%s)")
         values = (lecturer_id,lecture_date,unit_id)
         db = database()
         db.connect_db()
@@ -55,7 +56,7 @@ class attendancems(): # Functions to interact with database
         db.connect_db()
         db.cursor.execute(query,values)
         db.conn.close()
-    def Attendance_report_by_student(self,student_id): # Fetches a student's attendance report
+    def attendance_report_by_student(self,student_id): # Fetches a student's attendance report
         query = ("""SELECT s.surname,a.class_id, u.unit_name,a.attendance FROM attendance AS a 
                  JOIN students AS s ON a.student_id = s.student_id JOIN unit AS u ON a.class_id = u.class_id
                   WHERE student_id = (%s)""")
@@ -66,7 +67,7 @@ class attendancems(): # Functions to interact with database
         results = db.cursor.fetchall()
         db.conn.close()
         return results
-    def Attendance_report_by_class(self,class_id): # Fetches a class's attendance report
+    def attendance_report_by_class(self,class_id): # Fetches a class's attendance report
         query = ("""SELECT s.surname,a.class_id, u.unit_name,a.attendance FROM attendance AS a 
                  JOIN students AS s ON a.student_id = s.student_id JOIN unit AS u ON a.class_id = u.class_id
                   WHERE class_id = (%s)""")
@@ -77,3 +78,6 @@ class attendancems(): # Functions to interact with database
         results = db.cursor.fetchall()
         db.conn.close()
         return results
+
+db = database()  
+db.connect_db()
