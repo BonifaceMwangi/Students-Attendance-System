@@ -79,5 +79,5 @@ class attendancems(): # Functions to interact with database
         db.conn.close()
         return results
 
-db = database()  
-db.connect_db()
+db =database()
+db 
